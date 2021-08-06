@@ -21,16 +21,35 @@ export class Rocket implements Payload {
         }
         return sumOfItems;
     }
-    currentMassKg(){
+    currentMassKg(): number{
+        let output: number = 0;
+        for (let astronaut of this.astronauts) {
+            output += astronaut.massKg;
+        }
+        for (let item of this.cargoItems) {
+            output += item.massKg;
+        }
+        return output;
 
     }
-    canAdd(item: Payload){
+    canAdd(item: Payload): boolean {
+        return (this.currentMassKg() + item.massKg <= this.totalCapacityKg);
 
     }
-    addCargo(cargo: Cargo){
+    addCargo(cargo: Cargo): boolean{
+        if (this.canAdd(cargo)) {
+            this.cargoItems.push(cargo);
+            return true;
+        } 
+        else { return false; }
 
     }
-    addAstronaut(astronaut: Astronaut){
+    addAstronaut(astronaut: Astronaut): boolean{
+        if (this.canAdd(astronaut)) {
+            this.astronauts.push(astronaut);
+            return true;
+        }
+        else { return false; }
 
     }
 }
